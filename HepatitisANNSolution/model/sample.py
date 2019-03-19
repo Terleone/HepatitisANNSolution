@@ -24,4 +24,3 @@ class Sample:
         self.protime = protime
         self.histology = histology
         return
-
