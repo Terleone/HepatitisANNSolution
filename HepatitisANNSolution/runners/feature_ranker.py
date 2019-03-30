@@ -12,24 +12,23 @@ presenter.print(samples)
 
 ranking = []
 """Creating an empty Sample object to iterate over names of it's attributes."""
-for feature_name, none in Sample('', '', '', '', '', '', '', '', '', '',
-                                 '', '', '', '', '', '', '', '', '', '', ).__dict__.items():
-    if feature_name == 'classification':
-        continue
+
+
+for i in range(len(Sample.labels)):
     die = []
     live = []
     for sample in samples:
         if sample.classification == '1':
-            die.append(getattr(sample, feature_name))
+            die.append(sample.attributes[i])
         elif sample.classification == '2':
-            live.append(getattr(sample, feature_name))
+            live.append(sample.attributes[i])
     result = stats.ks_2samp(die, live)
     if result[1] <= 0.1:
-        ranking.append((feature_name, result[0]))
+        ranking.append((Sample.labels[i], result[0]))
 
-    print('Wynik dla cechy ' + feature_name + ':\n\t'
-          + 'statistics = ' + str(result[0]) + '\n\t'
-          + 'pvalue = ' + str(result[1]) + '\n')
+    print('Wynik dla cechy ' + Sample.labels[i] + ':\n\t'
+        + 'statistics = ' + str(result[0]) + '\n\t'
+        + 'pvalue = ' + str(result[1]) + '\n')
 
 ranking.sort(key=lambda tup: tup[1], reverse=True)
 print("Cechy wedlug przydatnosci:")

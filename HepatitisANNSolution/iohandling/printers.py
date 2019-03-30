@@ -1,8 +1,11 @@
+from model.sample import Sample
+
+
 class SamplePresenter:
     """Class responsible for printing data of samples."""
     def print_sample(self, sample):
-        for attr, value in sample.__dict__.items():
-            print(attr + ': ' + value)
+        for i in range(len(sample.attributes)):
+            print(Sample.labels[i] + ': ' + sample.attributes[i])
         return
 
     def print(self, samples):
