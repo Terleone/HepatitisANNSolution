@@ -25,4 +25,5 @@ class ANN:
                       loss='mean_absolute_error',
                       metrics=['accuracy'])
         model.fit(train_attributes, train_labels, 1)
-        return
+        test_loss, test_acc = model.evaluate(test_attributes, test_labels)
+        return test_acc
