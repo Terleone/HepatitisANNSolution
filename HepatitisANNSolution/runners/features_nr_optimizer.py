@@ -1,11 +1,13 @@
 from model.ann import ANN
 
-
 data_file_name = 'hepatitis.data.txt'
-features = 10
+nr_of_double_cross_validations = 5
 momentum = False
 hidden_layer_size = 13
 
-ann = ANN(hidden_layer_size, momentum, features, data_file_name)
-test_acc = ann.train_test_cycle()
-print('Osiagnieta dokladnosc: ' + str(test_acc))
+
+results = []
+for i in range(1, 11):
+    ann = ANN(hidden_layer_size, momentum, i, data_file_name)
+    results.append((i, ann.k_times_double_cross_validation(5)))
+print(results)

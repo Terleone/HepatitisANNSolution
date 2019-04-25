@@ -5,18 +5,30 @@ from model.data_preparer import DataPreparer
 
 
 class ANN:
-    def __init__(self, hidden_layer_size, momentum, features, data_file_name):
+    def __init__(self, hidden_layer_size, momentum, features, data_file_name, silent=False):
         self.hidden_layer_size = hidden_layer_size
         self.momentum = momentum
         self.features = features
         self.data_file_name = data_file_name
+        self.silent = silent
         return
 
-    def train_test_cycle(self):
+    def k_times_double_cross_validation(self, k):
+        partial_sum = 0.0
+        for i in range(0, k):
+            partial_sum = partial_sum + self.double_cross_validation()
+        return partial_sum / k
+
+    def double_cross_validation(self):
         (train_attributes, train_labels), (test_attributes, test_labels) =\
             DataPreparer().prepare_data(SampleReader().read(self.data_file_name), self.features)
+        acc1 = self.train_test_cycle(train_attributes, train_labels, test_attributes, test_labels)
+        acc2 = self.train_test_cycle(test_attributes, test_labels, train_attributes, train_labels)
+        return (acc1 + acc2) / 2
+
+    def train_test_cycle(self, train_attributes, train_labels, test_attributes, test_labels):
         model = keras.Sequential([
-            keras.layers.Flatten(input_shape=(10,)),
+            keras.layers.Flatten(input_shape=(self.features,)),
             keras.layers.Dense(self.hidden_layer_size, activation=tf.nn.relu),
             keras.layers.Dense(2, activation=tf.nn.softmax)
         ])
@@ -24,6 +36,8 @@ class ANN:
                                                      decay=0.0, nesterov=False),
                       loss='mean_absolute_error',
                       metrics=['accuracy'])
-        model.fit(train_attributes, train_labels, 1)
-        test_loss, test_acc = model.evaluate(test_attributes, test_labels)
-        return test_acc
+        model.fit(x=train_attributes, y=train_labels, batch_size=1, epochs=10, verbose=1 if not self.silent else 0)
+        scores = model.evaluate(test_attributes, test_labels)
+        if not self.silent:
+            print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+        return scores[1]
