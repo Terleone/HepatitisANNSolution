@@ -5,7 +5,8 @@ from model.data_preparer import DataPreparer
 
 
 class ANN:
-    def __init__(self, hidden_layer_size, momentum, features, stratify, epochs, missing_values_treating, data_file_name, silent=False):
+    def __init__(self, hidden_layer_size, momentum, features, stratify, epochs, missing_values_treating,
+                 data_file_name, silent=False):
         self.hidden_layer_size = hidden_layer_size
         self.momentum = momentum
         self.features = features

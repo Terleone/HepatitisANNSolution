@@ -3,7 +3,6 @@ from model.ann import ANN
 
 silent = False
 data_file_name = 'hepatitis.data.txt'
-nr_of_double_cross_validations = 5
 
 # Experiments' parameters
 hidden_layer_sizes = [5]#, 8, 13]
@@ -30,7 +29,7 @@ for i in range(0, len(hidden_layer_sizes)):
                                    + '\nWith stratification: ' + str(stratify_options[l])
                                    + '\nNumber of iterations: ' + str(epochs[m])
                                    + '\nMissing values treating: ' + str(missing_values_treating_options[n])
-                                   + '\nAccuracy result: ' + str(ann.k_times_double_cross_validation(5))
+                                   + '\nAccuracy result = ' + str(ann.k_times_double_cross_validation(5))
                                    + '\n***ENTRY END***\n')
 
 file.close()
