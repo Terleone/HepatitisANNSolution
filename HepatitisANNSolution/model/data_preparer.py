@@ -4,12 +4,14 @@ import numpy as np
 
 class DataPreparer:
     """Class responsible for preparing data sets for training and testing."""
-    def prepare_data(self, samples, features):
+    def prepare_data(self, samples, features, stratify, missing_values_option):
         for sample in samples:
             sample.convert_to_ranked()
             #sample.question_mark_to_min_int()
-        samples = self.handle_missing_values(samples, features)
-        (train_samples, test_samples) = train_test_split(samples, test_size=0.5)
+        samples = self.handle_missing_values(samples, features, missing_values_option)
+        (train_samples, test_samples) = train_test_split(samples, test_size=0.5,
+                                                         stratify=[sample.classification for sample in samples]
+                                                         if stratify else None)
 
         train_attributes = np.empty(shape=(len(train_samples), features))
         train_labels = np.empty(shape=len(train_samples))
@@ -25,17 +27,25 @@ class DataPreparer:
             test_labels[i] = sample.classification
         return (train_attributes, train_labels), (test_attributes, test_labels)
 
-    def handle_missing_values(self, samples, features):
-        averages = []
-        for i in range(0, features):
-            partial_sum = 0.0
-            for sample in samples:
-                feature = sample.attributes[i]
-                if feature != '?':
-                    partial_sum = partial_sum + float(feature)
-            averages.append(partial_sum / len(samples))
-        for sample in samples:
+    def handle_missing_values(self, samples, features, missing_values_option):
+
+        if missing_values_option == 'average':
+            averages = []
             for i in range(0, features):
-                if sample.attributes[i] == '?':
-                    sample.attributes[i] = averages[i]
+                partial_sum = 0.0
+                for sample in samples:
+                    feature = sample.attributes[i]
+                    if feature != '?':
+                        partial_sum = partial_sum + float(feature)
+                averages.append(partial_sum / len(samples))
+            for sample in samples:
+                for i in range(0, features):
+                    if sample.attributes[i] == '?':
+                        sample.attributes[i] = averages[i]
+        elif missing_values_option == 'median':
+            print()
+        elif missing_values_option == 'removal':
+            print()
+        else:
+            raise Exception('missing_values_option has improper value.')
         return samples
