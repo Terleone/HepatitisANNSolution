@@ -43,9 +43,20 @@ class DataPreparer:
                     if sample.attributes[i] == '?':
                         sample.attributes[i] = averages[i]
         elif missing_values_option == 'median':
-            print()
+            medians = []
+            for i in range(0, features):
+                values = [sample.attributes[i] for sample in samples]
+                values.sort()
+                length = len(values)
+                medians.append(values[int(length / 2)]
+                               if length % 2 == 0 else values[int(length / 2)] + values[int((length / 2)) - 1])
+            for sample in samples:
+                for i in range(0, features):
+                    if sample.attributes[i] == '?':
+                        sample.attributes[i] = medians[i]
         elif missing_values_option == 'removal':
-            print()
+            new_samples = filter(lambda s: '?' not in s.attributes, samples)
+            samples = new_samples
         else:
             raise Exception('missing_values_option has improper value.')
         return samples
