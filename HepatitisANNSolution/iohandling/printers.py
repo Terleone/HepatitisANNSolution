@@ -25,4 +25,4 @@ class ChartDrawer:
         plt.xlabel(x_label)
         plt.ylabel(y_label)
         plt.plot(x, y, 'bo')
-        plt.savefig(y_label + '_and_' + x_label + '.png')
+        plt.savefig(x_label + '_and_' + y_label + '.png')
