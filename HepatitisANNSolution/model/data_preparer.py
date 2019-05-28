@@ -55,8 +55,7 @@ class DataPreparer:
                     if sample.attributes[i] == '?':
                         sample.attributes[i] = medians[i]
         elif missing_values_option == 'removal':
-            new_samples = filter(lambda s: '?' not in s.attributes, samples)
-            samples = new_samples
+            samples = list(filter(lambda s: '?' not in s.attributes, samples))
         else:
             raise Exception('missing_values_option has improper value.')
         return samples

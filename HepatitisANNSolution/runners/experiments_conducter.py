@@ -45,7 +45,7 @@ drawer.print_chart([str(option) for option in momentum_options], results, 'Momen
                    'Relation between using momentum and accuracy')
 
 # Relation between method of dealing with missing values and quality
-missing_values_treating_options = ['average', 'median']#, 'removal']
+missing_values_treating_options = ['average', 'median', 'removal']
 
 hidden_layer_size = 13
 momentum = True
@@ -60,7 +60,7 @@ for i in range(0, len(missing_values_treating_options)):
     results.append(ann.k_times_double_cross_validation(5))
 
 drawer.print_chart(missing_values_treating_options, results, 'Missing values treating options', 'Accuracy',
-                   'Relation between using different methods of treating missing values and accuracy')
+                   'Relation between using\ndifferent methods of treating\nmissing values and accuracy')
 
 # Relation between number of features and quality
 features = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -78,7 +78,7 @@ for i in range(0, len(features)):
     results.append(ann.k_times_double_cross_validation(5))
 
 drawer.print_chart(features, results, 'Number of features', 'Accuracy',
-                   'Relation between number of features and accuracy')
+                   'Relation between number\nof features and accuracy')
 
 # Relation between using stratification and quality
 stratification_options = [False, True]
@@ -96,7 +96,7 @@ for i in range(0, len(stratification_options)):
     results.append(ann.k_times_double_cross_validation(5))
 
 drawer.print_chart([str(option) for option in stratification_options], results, 'Stratification options', 'Accuracy',
-                   'Relation between using stratification and accuracy')
+                   'Relation between using\nstratification and accuracy')
 
 # Relation between number of iterations and quality
 epochs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -117,9 +117,9 @@ for i in range(0, len(epochs)):
     time_results.append(timer() - start_time)
 
 drawer.print_chart(epochs, results, 'Number of iterations', 'Accuracy',
-                   'Relation between number of iterations and accuracy')
+                   'Relation between number\nof iterations and accuracy')
 
 # Relation between number of iterations and time
 
 drawer.print_chart(epochs, time_results, 'Number of iterations', 'Time [s]',
-                   'Relation between number of iterations and time')
+                   'Relation between number\nof iterations and time')
