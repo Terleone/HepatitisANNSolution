@@ -48,8 +48,8 @@ class DataPreparer:
                 values = [sample.attributes[i] for sample in samples]
                 values.sort()
                 length = len(values)
-                medians.append(values[int(length / 2)]
-                               if length % 2 == 0 else values[int(length / 2)] + values[int((length / 2)) - 1])
+                medians.append(values[int(length / 2)] if length % 2 == 0
+                               else float(values[int(length / 2)]) + float(values[int((length / 2)) - 1]))
             for sample in samples:
                 for i in range(0, features):
                     if sample.attributes[i] == '?':
