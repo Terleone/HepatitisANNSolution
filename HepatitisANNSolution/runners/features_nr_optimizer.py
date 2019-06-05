@@ -13,5 +13,6 @@ missing_values_treating_option = 'average'
 results = []
 for i in range(1, 11):
     ann = ANN(hidden_layer_size, momentum, i, stratify, epochs, missing_values_treating_option, data_file_name)
-    results.append((i, ann.k_times_double_cross_validation(5)))
+    acc, y_true, y_pred = ann.k_times_double_cross_validation(5)
+    results.append((i, acc))
 print(results)
